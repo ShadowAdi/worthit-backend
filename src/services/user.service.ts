@@ -1,6 +1,7 @@
 import { logger } from "../config/logger";
 import { User } from "../models/user.model";
 import { CreateUserDto } from "../types/user/create-user.dto";
+import { UpdateUserDto } from "../types/user/update-user.dto";
 import { AppError } from "../utils/AppError";
 import { hashPassword } from "../utils/password-utils";
 
@@ -50,7 +51,7 @@ class UserClassService {
         }
     }
 
-    async getUser(userId:string) {
+    async getUser(userId: string) {
         try {
             const user = await User.findById(userId);
             return user
@@ -62,14 +63,29 @@ class UserClassService {
                 : new AppError("Internal Server Error", 500);
         }
     }
-    
-    async deleteUser(userId:string) {
+
+    async deleteUser(userId: string) {
         try {
-             await User.findByIdAndDelete(userId);
+            await User.findByIdAndDelete(userId);
             return "User deleted successfully"
         } catch (error: any) {
             logger.error(`Failed to delete user service: ${error.message}`);
             console.error(`Failed to delete user service: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
+
+    async updateUser(userId: string, updateUser: UpdateUserDto) {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(userId, updateUser, {
+                new: true
+            });
+            return updatedUser?._id
+        } catch (error: any) {
+            logger.error(`Failed to update user service: ${error.message}`);
+            console.error(`Failed to update user service: ${error.message}`);
             throw error instanceof AppError
                 ? error
                 : new AppError("Internal Server Error", 500);

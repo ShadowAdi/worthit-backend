@@ -33,7 +33,8 @@ const schema = new Schema<IUser>({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     profile_url: {
         type: String
@@ -48,10 +49,10 @@ const schema = new Schema<IUser>({
         type: [SocialLinkSchema],
         default: []
     }
-},{
-    timestamps:true
+}, {
+    timestamps: true
 })
 
 
 export const User: Model<IUser> =
-  mongoose.models.User || mongoose.model<IUser>("User", schema);
+    mongoose.models.User || mongoose.model<IUser>("User", schema);
