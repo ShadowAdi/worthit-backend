@@ -96,4 +96,24 @@ class BrandClassService {
             throw new AppError(errorMessage, 500);
         }
     }
+
+    async deleteBrand(brandId: string, userId: string) {
+        try {
+            const isBrandExists = await Brand.exists({
+                _id: brandId,
+                founderId: userId
+            })
+
+            await Brand.deleteOne({
+                id: brandId
+            })
+            return "Brand deleted succussfully"
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(`Failed to delete brand by id: ${errorMessage}`);
+            throw new AppError(errorMessage, 500);
+        }
+    }
 }
