@@ -171,4 +171,35 @@ class BrandClassService {
         }
     }
 
+    async increaseBrandView(
+        brandId: string
+    ) {
+        try {
+            const updatedBrand = await Brand.findByIdAndUpdate(
+                brandId,
+                {
+                    $inc: {
+                        viewCount: 1
+                    }
+                },
+                {
+                    new: true,
+                }
+            ).lean();
+
+            if (!updatedBrand) {
+                logger.error(`Brand not found: ${brandId}`)
+                throw new AppError("Brand not found", 404);
+            }
+
+            return updatedBrand;
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : "Unknown error";
+
+            logger.error(`Failed to increase the view count of brand: ${errorMessage}`);
+            throw new AppError(errorMessage, 500);
+        }
+    }
+
 }
