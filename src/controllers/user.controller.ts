@@ -93,7 +93,7 @@ class UserControllerClass {
 
             logger.info(`Updating user with ID: ${userId}`);
             console.log(`Updating user with ID: ${userId}`);
-            
+
             const updateData: UpdateUserDto = req.body;
 
 
@@ -105,7 +105,7 @@ class UserControllerClass {
             res.status(200).json({
                 success: true,
                 message: "User updated successfully",
-                data: { userId: updatedUserId }
+                userId: updatedUserId 
             });
         } catch (error: any) {
             logger.error(`Failed to update user controller: ${error.message}`);
