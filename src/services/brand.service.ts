@@ -38,4 +38,62 @@ class BrandClassService {
             throw new AppError(`Failed to create brand: ${errorMessage}`, 500)
         }
     }
+
+    async getAllBrands() {
+        try {
+            const brands = await Brand.find()
+                .populate("founderId", "username email profile_url")
+                .lean();
+
+            return {
+                totalBrands: brands.length,
+                brands
+            };
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(`Failed to get all brands: ${errorMessage}`);
+            throw new AppError(`Failed to get all brands: ${errorMessage}`, 500);
+        }
+    }
+
+    async getBrand(brandId: string) {
+        try {
+            const brand = await Brand.findById(brandId)
+                .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
+                .lean();
+
+            return brand;
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(
+                `Failed to get brand by id:${brandId} error: ${errorMessage}`
+            );
+            throw new AppError(errorMessage, 500);
+        }
+    }
+
+    async getBrandByNameOrSlug(identifier: string) {
+        try {
+            return await Brand.find({
+                $or: [
+                    { name: identifier },
+                    { slug: identifier }
+                ]
+            })
+                .select("name slug category viewCount founderId")
+                .populate("founderId", "username profile_url")
+                .lean();
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(`Failed to get brand by name or slug: ${errorMessage}`);
+            throw new AppError(errorMessage, 500);
+        }
+    }
 }

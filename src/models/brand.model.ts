@@ -168,6 +168,7 @@ const schema = new Schema<IBrand>(
     }
 );
 
+schema.index({ name: 1 });
 schema.index({ slug: 1 });
 schema.index({ founderId: 1 });
 schema.index({ status: 1 });
