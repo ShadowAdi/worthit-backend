@@ -50,6 +50,31 @@ class UserClassService {
         }
     }
 
+    async getUser(userId:string) {
+        try {
+            const user = await User.findById(userId);
+            return user
+        } catch (error: any) {
+            logger.error(`Failed to get user service: ${error.message}`);
+            console.error(`Failed to get user service: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
+    
+    async deleteUser(userId:string) {
+        try {
+             await User.findByIdAndDelete(userId);
+            return "User deleted successfully"
+        } catch (error: any) {
+            logger.error(`Failed to delete user service: ${error.message}`);
+            console.error(`Failed to delete user service: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
 }
 
 export const UserService = new UserClassService()
