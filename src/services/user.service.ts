@@ -64,6 +64,21 @@ class UserClassService {
         }
     }
 
+    async getUserByEmail(email: string) {
+        try {
+            const user = await User.findOne({
+                email:email
+            });
+            return user
+        } catch (error: any) {
+            logger.error(`Failed to get user service by email:${email}: ${error.message}`);
+            console.error(`Failed to get user service by email:${email}: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
+
     async deleteUser(userId: string) {
         try {
             await User.findByIdAndDelete(userId);
