@@ -79,13 +79,19 @@ class UserClassService {
 
     async updateUser(userId: string, updateUser: UpdateUserDto) {
         try {
-            const updatedUser = await User.findByIdAndUpdate(userId, updateUser, {
-                new: true
-            });
-            return updatedUser?._id
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                updateUser,
+                { new: true }
+            );
+
+            if (!updatedUser) {
+                throw new AppError("User not found", 404);
+            }
+
+            return updatedUser._id;
         } catch (error: any) {
             logger.error(`Failed to update user service: ${error.message}`);
-            console.error(`Failed to update user service: ${error.message}`);
             throw error instanceof AppError
                 ? error
                 : new AppError("Internal Server Error", 500);
