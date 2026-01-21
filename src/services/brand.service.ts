@@ -203,3 +203,5 @@ class BrandClassService {
     }
 
 }
+
+export const BrandService = new BrandClassService()
