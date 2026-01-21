@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services/auth.service";
 import { LoginUserDto } from "../types/auth/login-user.dto";
 import { logger } from "../config/logger";
-import { AppError } from "../utils/AppError";
 
 class AuthControllerClass {
     async loginUser(req: Request, res: Response, next: NextFunction) {
