@@ -2,14 +2,15 @@ import { Router } from "express";
 import { UserController } from "../controllers/user.controller";
 import { createUserValidator, updateUserValidator, userIdValidator } from "../validators/user.validator";
 import { validate } from "../middlewares/validation.middleware";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export const userRouter = Router();
 
 // Create a new user
 userRouter.post(
-    "/", 
-    createUserValidator, 
-    validate, 
+    "/",
+    createUserValidator,
+    validate,
     UserController.createUser.bind(UserController)
 );
 
@@ -18,25 +19,24 @@ userRouter.get("/", UserController.getAllUsers.bind(UserController));
 
 // Get user by ID
 userRouter.get(
-    "/:userId", 
-    userIdValidator, 
-    validate, 
+    "/:userId",
+    userIdValidator,
+    validate,
     UserController.getUserById.bind(UserController)
 );
 
 // Update user by ID
 userRouter.patch(
-    "/:userId", 
-    userIdValidator, 
-    updateUserValidator, 
-    validate, 
+    "/",
+    AuthMiddleware,
+    updateUserValidator,
+    validate,
     UserController.updateUser.bind(UserController)
 );
 
 // Delete user by ID
 userRouter.delete(
-    "/:userId", 
-    userIdValidator, 
-    validate, 
+    "/",
+    AuthMiddleware,
     UserController.deleteUser.bind(UserController)
 );
