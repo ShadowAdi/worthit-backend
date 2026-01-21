@@ -26,6 +26,11 @@ const schema = new Schema<IUser>({
         type: String,
         trim: true
     },
+    email: {
+        type: String,
+        required: true,
+        trim: true
+    },
     username: {
         type: String,
         required: true,
@@ -39,7 +44,6 @@ const schema = new Schema<IUser>({
     profile_url: {
         type: String
     },
-
     authProvider: {
         type: String,
         enum: ["email", "google"],
