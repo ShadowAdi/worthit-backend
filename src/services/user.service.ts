@@ -94,6 +94,35 @@ class UserClassService {
 
     async updateUser(userId: string, updateUser: UpdateUserDto) {
         try {
+            // Get the current user
+            const currentUser = await User.findById(userId);
+            
+            if (!currentUser) {
+                throw new AppError("User not found", 404);
+            }
+
+            // Handle social_links merging if provided
+            if (updateUser.social_links && Array.isArray(updateUser.social_links)) {
+                const existingLinks = currentUser.social_links || [];
+                const newLinks = updateUser.social_links;
+
+                // Create a map of existing links
+                const linksMap = new Map(
+                    existingLinks.map(link => [link.key, link.value])
+                );
+
+                // Update or add new links
+                newLinks.forEach(link => {
+                    linksMap.set(link.key, link.value);
+                });
+
+                // Convert map back to array
+                updateUser.social_links = Array.from(linksMap.entries()).map(([key, value]) => ({
+                    key,
+                    value
+                }));
+            }
+
             const updatedUser = await User.findByIdAndUpdate(
                 userId,
                 updateUser,

@@ -8,10 +8,10 @@ export interface IUser extends Document {
 
     authProvider: "email" | "google";
 
-    social_links?: [{
+    social_links?: {
         key: string;
         value: string
-    }];
+    }[];
 
     createdAt: string | Date;
     updateAt: string | Date;

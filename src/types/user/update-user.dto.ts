@@ -3,8 +3,8 @@ export interface UpdateUserDto {
     profile_url?: string;
 
 
-    social_links?: [{
+    social_links?: {
         key: string;
         value: string
-    }];
+    }[];
 }
