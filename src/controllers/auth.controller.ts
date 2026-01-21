@@ -26,6 +26,36 @@ class AuthControllerClass {
             next(error);
         }
     }
+
+    async getAuthenticatedUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userEmail = req.user?.email;
+            
+            if (!userEmail) {
+                logger.error(`User email not found in request`);
+                console.error(`User email not found in request`);
+                throw new Error("User email not found in request");
+            }
+
+            logger.info(`Fetching authenticated user data for: ${userEmail}`);
+            console.log(`Fetching authenticated user data for: ${userEmail}`);
+            
+            const user = await AuthService.getAuthenticatedUser(userEmail);
+            
+            logger.info(`Authenticated user data retrieved successfully: ${user._id}`);
+            console.log(`Authenticated user data retrieved successfully: ${user._id}`);
+            
+            res.status(200).json({
+                success: true,
+                message: "User data retrieved successfully",
+                data: user
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get authenticated user controller: ${error.message}`);
+            console.error(`Failed to get authenticated user controller: ${error.message}`);
+            next(error);
+        }
+    }
 }
 
 export const AuthController = new AuthControllerClass();
