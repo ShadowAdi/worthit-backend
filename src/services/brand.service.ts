@@ -3,6 +3,7 @@ import { logger } from "../config/logger";
 import { Brand } from "../models/brand.model";
 import { CreateBrandDto } from "../types/brand/brand-create.dto";
 import { AppError } from "../utils/AppError";
+import { UpdateBrandDto } from "../types/brand/brand-update.dto";
 
 class BrandClassService {
     async createBrand(payload: CreateBrandDto, userId: string | Types.ObjectId) {
@@ -104,8 +105,14 @@ class BrandClassService {
                 founderId: userId
             })
 
+            if (!isBrandExists) {
+                logger.error(`Failed to get the brand`)
+                console.error(`Failed to get the brand`)
+                throw new AppError(`Failed to get the brand`, 400)
+            }
+
             await Brand.deleteOne({
-                id: brandId
+                _id: brandId
             })
             return "Brand deleted succussfully"
         } catch (error) {
@@ -116,4 +123,52 @@ class BrandClassService {
             throw new AppError(errorMessage, 500);
         }
     }
+
+    async updateBrand(
+        brandId: string,
+        userId: string,
+        updateBrandPayload: UpdateBrandDto
+    ) {
+        try {
+            const brandExists = await Brand.exists({
+                _id: brandId,
+                founderId: userId
+            });
+
+            if (!brandExists) {
+                throw new AppError(
+                    "Brand not found or you are not authorized",
+                    403
+                );
+            }
+
+            if (
+                updateBrandPayload.launchAt &&
+                new Date(updateBrandPayload.launchAt) < new Date()
+            ) {
+                throw new AppError(
+                    "Launch date cannot be in the past",
+                    400
+                );
+            }
+
+            const updatedBrand = await Brand.findByIdAndUpdate(
+                brandId,
+                { $set: updateBrandPayload },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            ).lean();
+
+            return updatedBrand;
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : "Unknown error";
+
+            logger.error(`Failed to update brand: ${errorMessage}`);
+            throw new AppError(errorMessage, 500);
+        }
+    }
+
 }
