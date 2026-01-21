@@ -28,6 +28,7 @@ export interface IBrand extends Document {
 
     status: "draft" | "published";
     publishedAt?: Date; 
+    launchAt?: Date;
 
     recommendCount: number;
     notRecommendCount: number;

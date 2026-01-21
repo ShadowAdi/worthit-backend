@@ -126,6 +126,9 @@ const schema = new Schema<IBrand>(
         publishedAt: {
             type: Date,
         },
+        launchAt: {
+            type: Date,
+        },
         recommendCount: {
             type: Number,
             default: 0,
@@ -170,6 +173,7 @@ schema.index({ founderId: 1 });
 schema.index({ status: 1 });
 schema.index({ category: 1 });
 schema.index({ publishedAt: -1 });
+schema.index({ launchAt: -1 });
 
 export const Brand: Model<IBrand> =
     mongoose.models.Brand || mongoose.model<IBrand>("Brand", schema);
