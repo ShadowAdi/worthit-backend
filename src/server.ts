@@ -4,6 +4,7 @@ import { CorsConfig } from "./config/cors";
 import { CustomErrorHandler } from "./middlewares/custom-error.middleware";
 import { healthRouter } from "./routes/health.route";
 import { userRouter } from "./routes/user.route";
+import { authRouter } from "./routes/auth.route";
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/health", healthRouter);
 app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 app.get('/', (_req, res) => {
     res.json({
