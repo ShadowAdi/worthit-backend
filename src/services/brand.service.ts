@@ -152,9 +152,38 @@ class BrandClassService {
                 );
             }
 
+            // Prepare update object, only including fields that are explicitly provided
+            const updateData: any = {};
+
+            // Handle non-array fields
+            if (updateBrandPayload.name !== undefined) updateData.name = updateBrandPayload.name;
+            if (updateBrandPayload.description !== undefined) updateData.description = updateBrandPayload.description;
+            if (updateBrandPayload.slug !== undefined) updateData.slug = updateBrandPayload.slug;
+            if (updateBrandPayload.whyItExists !== undefined) updateData.whyItExists = updateBrandPayload.whyItExists;
+            if (updateBrandPayload.demoVideo !== undefined) updateData.demoVideo = updateBrandPayload.demoVideo;
+            if (updateBrandPayload.category !== undefined) updateData.category = updateBrandPayload.category;
+            if (updateBrandPayload.howToUse !== undefined) updateData.howToUse = updateBrandPayload.howToUse;
+            if (updateBrandPayload.websiteUrl !== undefined) updateData.websiteUrl = updateBrandPayload.websiteUrl;
+            if (updateBrandPayload.launchAt !== undefined) updateData.launchAt = updateBrandPayload.launchAt;
+
+            // Handle country and update isIndianBrand accordingly
+            if (updateBrandPayload.country !== undefined) {
+                updateData.country = updateBrandPayload.country;
+                updateData.isIndianBrand = updateBrandPayload.country.toLowerCase().trim() === "india";
+            }
+
+            // Handle array fields - only update if explicitly provided and not undefined
+            // This prevents accidental overwriting of existing data
+            if (updateBrandPayload.images !== undefined) {
+                updateData.images = updateBrandPayload.images;
+            }
+            if (updateBrandPayload.socialLinks !== undefined) {
+                updateData.socialLinks = updateBrandPayload.socialLinks;
+            }
+
             const updatedBrand = await Brand.findByIdAndUpdate(
                 brandId,
-                { $set: updateBrandPayload },
+                { $set: updateData },
                 {
                     new: true,
                     runValidators: true
