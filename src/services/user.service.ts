@@ -32,6 +32,24 @@ class UserClassService {
             throw new AppError(`Failed to create user`, 500)
         }
     }
+
+    async getAllUser() {
+        try {
+            const users = await User.find();
+
+            return {
+                users,
+                totalUsers: users.length,
+            };
+        } catch (error: any) {
+            logger.error(`Failed to get all user service: ${error.message}`);
+            console.error(`Failed to get all user service: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
+
 }
 
 export const UserService = new UserClassService()
