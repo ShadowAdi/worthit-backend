@@ -1,6 +1,6 @@
 export interface IUser extends Document {
-    name: string;
-    username?: string;
+    name?: string;
+    username: string;
     email: string;
     password: string;
     about?: string;
@@ -12,9 +12,6 @@ export interface IUser extends Document {
         key: string;
         value: string
     }];
-
-
-
 
     createdAt: string | Date;
     updateAt: string | Date;
