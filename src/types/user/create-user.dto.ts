@@ -1,4 +1,4 @@
-export interface IUser extends Document {
+export interface CreateUserDto {
     name?: string;
     username: string;
     email: string;
@@ -6,13 +6,9 @@ export interface IUser extends Document {
     about?: string;
     profile_url?: string;
 
-    authProvider: "email" | "google";
 
     social_links?: [{
         key: string;
         value: string
     }];
-
-    createdAt: string | Date;
-    updateAt: string | Date;
 }
