@@ -152,10 +152,8 @@ class BrandClassService {
                 );
             }
 
-            // Prepare update object, only including fields that are explicitly provided
             const updateData: any = {};
 
-            // Handle non-array fields
             if (updateBrandPayload.name !== undefined) updateData.name = updateBrandPayload.name;
             if (updateBrandPayload.description !== undefined) updateData.description = updateBrandPayload.description;
             if (updateBrandPayload.slug !== undefined) updateData.slug = updateBrandPayload.slug;
@@ -166,14 +164,11 @@ class BrandClassService {
             if (updateBrandPayload.websiteUrl !== undefined) updateData.websiteUrl = updateBrandPayload.websiteUrl;
             if (updateBrandPayload.launchAt !== undefined) updateData.launchAt = updateBrandPayload.launchAt;
 
-            // Handle country and update isIndianBrand accordingly
             if (updateBrandPayload.country !== undefined) {
                 updateData.country = updateBrandPayload.country;
                 updateData.isIndianBrand = updateBrandPayload.country.toLowerCase().trim() === "india";
             }
 
-            // Handle array fields - only update if explicitly provided and not undefined
-            // This prevents accidental overwriting of existing data
             if (updateBrandPayload.images !== undefined) {
                 updateData.images = updateBrandPayload.images;
             }
