@@ -3,6 +3,7 @@ import { BrandService } from "../services/brand.service";
 import { CreateBrandDto } from "../types/brand/brand-create.dto";
 import { UpdateBrandDto } from "../types/brand/brand-update.dto";
 import { logger } from "../config/logger";
+import { AppError } from "../utils/AppError";
 
 class BrandControllerClass {
     async createBrand(req: Request, res: Response, next: NextFunction) {
@@ -12,7 +13,7 @@ class BrandControllerClass {
             if (!userId) {
                 logger.error(`User ID not found in request`);
                 console.error(`User ID not found in request`);
-                throw new Error("User ID not found in request");
+                throw new AppError("User ID not found in request", 404);
             }
 
             logger.info(`Creating brand for user: ${userId}`);
@@ -65,7 +66,7 @@ class BrandControllerClass {
             if (!brandId) {
                 logger.error(`Brand ID not provided`);
                 console.error(`Brand ID not provided`);
-                throw new Error("Brand ID is required");
+                throw new AppError("Brand ID is required", 404);
             }
 
             logger.info(`Fetching brand with ID: ${brandId}`);
@@ -76,7 +77,7 @@ class BrandControllerClass {
             if (!brand) {
                 logger.error(`Brand not found: ${brandId}`);
                 console.error(`Brand not found: ${brandId}`);
-                throw new Error("Brand not found");
+                throw new AppError("Brand not found", 404);
             }
 
             logger.info(`Brand retrieved successfully: ${brandId}`);
@@ -101,7 +102,7 @@ class BrandControllerClass {
             if (!identifier) {
                 logger.error(`Brand identifier not provided`);
                 console.error(`Brand identifier not provided`);
-                throw new Error("Brand name or slug is required");
+                throw new AppError("Brand name or slug is required", 404);
             }
 
             logger.info(`Fetching brand by identifier: ${identifier}`);
@@ -132,13 +133,13 @@ class BrandControllerClass {
             if (!userId) {
                 logger.error(`User ID not found in request`);
                 console.error(`User ID not found in request`);
-                throw new Error("User ID not found in request");
+                throw new AppError("User ID not found in request", 404);
             }
 
             if (!brandId) {
                 logger.error(`Brand ID not provided`);
                 console.error(`Brand ID not provided`);
-                throw new Error("Brand ID is required");
+                throw new AppError("Brand ID is required", 404);
             }
 
             logger.info(`Deleting brand ${brandId} by user: ${userId}`);
@@ -168,13 +169,13 @@ class BrandControllerClass {
             if (!userId) {
                 logger.error(`User ID not found in request`);
                 console.error(`User ID not found in request`);
-                throw new Error("User ID not found in request");
+                throw new AppError("User ID not found in request", 404);
             }
 
             if (!brandId) {
                 logger.error(`Brand ID not provided`);
                 console.error(`Brand ID not provided`);
-                throw new Error("Brand ID is required");
+                throw new AppError("Brand ID is required", 404);
             }
 
             logger.info(`Updating brand ${brandId} by user: ${userId}`);
@@ -205,7 +206,7 @@ class BrandControllerClass {
             if (!brandId) {
                 logger.error(`Brand ID not provided`);
                 console.error(`Brand ID not provided`);
-                throw new Error("Brand ID is required");
+                throw new AppError("Brand ID is required", 404);
             }
 
             logger.info(`Increasing view count for brand: ${brandId}`);
