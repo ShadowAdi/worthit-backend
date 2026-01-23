@@ -34,4 +34,24 @@ class BrandControllerClass {
             next(error);
         }
     }
+     async getAllReviews(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { brandId } = req.params
+
+            const reviews = await ReviewService.getAllReview(brandId as string);
+
+            logger.info(`Reviews retrieved successfully for brand: ${brandId}`);
+            console.log(`Reviews retrieved successfully for brand: ${brandId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "Reviews retrieved successfully",
+                reviews: reviews
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get Reviews controller: ${error.message}`);
+            console.error(`Failed to get Review controller: ${error.message}`);
+            next(error);
+        }
+    }
 }
