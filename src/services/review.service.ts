@@ -46,4 +46,24 @@ class ReviewService {
             throw new AppError(`Error Creating Review`, 500)
         }
     }
+    async getAllReview(brandId: string) {
+        try {
+            const brandFound = await BrandService.getBrand(brandId)
+
+            if (!brandFound) {
+                logger.error(`Brand not found with id: ${brandId}`)
+                throw new AppError(`Brand not found with id: ${brandId}`, 404)
+            }
+
+            const reviews = await Review.find({
+                brandId: brandId
+            })
+
+            return reviews
+        } catch (error) {
+            console.error(`Error to get all Reviews: ${error}`)
+            logger.error(`Error to get all Reviews: ${error}`)
+            throw new AppError(`Error to get all Reviews`, 500)
+        }
+    }
 }
