@@ -66,4 +66,14 @@ class ReviewService {
             throw new AppError(`Error to get all Reviews`, 500)
         }
     }
+    async getReview(reviewId: string) {
+        try {
+            const getReview = await Review.findById(reviewId)
+            return getReview
+        } catch (error) {
+            console.error(`Error to get Review: ${error}`)
+            logger.error(`Error to get Review: ${error}`)
+            throw new AppError(`Error to get Review`, 500)
+        }
+    }
 }
