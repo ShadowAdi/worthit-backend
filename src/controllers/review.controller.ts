@@ -3,6 +3,7 @@ import { logger } from "../config/logger";
 import { AppError } from "../utils/AppError";
 import { CreateReviewDto } from "../types/review/review-create.dto";
 import { ReviewService } from "../services/review.service";
+import { UpdateReviewDto } from "../types/review/review-update.dto";
 
 class ReviewControllerClass {
   async createReview(req: Request, res: Response, next: NextFunction) {
@@ -74,6 +75,36 @@ class ReviewControllerClass {
     } catch (error: any) {
       logger.error(`Failed to get Review controller: ${error.message}`);
       console.error(`Failed to get Review controller: ${error.message}`);
+      next(error);
+    }
+  }
+  async updateReview(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user?.id;
+      const { reviewId } = req.params;
+
+      const payload: UpdateReviewDto = req.body;
+
+      if (!userId) {
+        logger.error(`User ID not found in request`);
+        console.error(`User ID not found in request`);
+        throw new AppError("User ID not found in request", 400);
+      }
+
+      const reviewUpdatedId = await ReviewService.updateReview(
+        reviewId as string,
+        userId,
+        payload,
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Review updated successfully",
+        reviewId: reviewUpdatedId,
+      });
+    } catch (error: any) {
+      logger.error(`Failed to update Review controller: ${error.message}`);
+      console.error(`Failed to update Review controller: ${error.message}`);
       next(error);
     }
   }
