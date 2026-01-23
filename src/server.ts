@@ -6,6 +6,7 @@ import { healthRouter } from "./routes/health.route";
 import { userRouter } from "./routes/user.route";
 import { authRouter } from "./routes/auth.route";
 import { brandRouter } from "./routes/brand.route";
+import { reviewRouter } from "./routes/review.route";
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use("/api/health", healthRouter);
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/brand", brandRouter);
+app.use("/api/review", reviewRouter);
 
 app.get('/', (_req, res) => {
     res.json({
