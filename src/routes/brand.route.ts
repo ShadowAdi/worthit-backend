@@ -2,6 +2,12 @@ import { Router } from "express";
 import { BrandController } from "../controllers/brand.controller";
 import { validate } from "../middlewares/validation.middleware";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
+import {
+    createBrandValidator,
+    updateBrandValidator,
+    brandIdValidator,
+    brandIdentifierValidator,
+} from "../validators/brand.validator";
 
 export const brandRouter = Router();
 
@@ -9,6 +15,8 @@ export const brandRouter = Router();
 brandRouter.post(
     "/",
     AuthMiddleware,
+    createBrandValidator,
+    validate,
     BrandController.createBrand.bind(BrandController)
 );
 
@@ -18,12 +26,16 @@ brandRouter.get("/", BrandController.getAllBrands.bind(BrandController));
 // Get brand by name or slug
 brandRouter.get(
     "/search/:identifier",
+    brandIdentifierValidator,
+    validate,
     BrandController.getBrandByNameOrSlug.bind(BrandController)
 );
 
 // Get brand by ID
 brandRouter.get(
     "/:brandId",
+    brandIdValidator,
+    validate,
     BrandController.getBrand.bind(BrandController)
 );
 
@@ -31,6 +43,9 @@ brandRouter.get(
 brandRouter.patch(
     "/:brandId",
     AuthMiddleware,
+    brandIdValidator,
+    updateBrandValidator,
+    validate,
     BrandController.updateBrand.bind(BrandController)
 );
 
@@ -38,11 +53,15 @@ brandRouter.patch(
 brandRouter.delete(
     "/:brandId",
     AuthMiddleware,
+    brandIdValidator,
+    validate,
     BrandController.deleteBrand.bind(BrandController)
 );
 
 // Increase brand view count
 brandRouter.post(
     "/:brandId/view",
+    brandIdValidator,
+    validate,
     BrandController.increaseBrandView.bind(BrandController)
 );
