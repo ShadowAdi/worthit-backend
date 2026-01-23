@@ -135,4 +135,32 @@ class ReviewControllerClass {
             next(error);
         }
     }
+    async getUserReview(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                logger.error(`User ID not found in request`);
+                console.error(`User ID not found in request`);
+                throw new AppError("User ID not found in request", 400);
+            }
+
+            const reviews = await ReviewService.getUserReview(userId);
+
+            logger.info(`User reviews retrieved successfully: ${userId}`);
+            console.log(`User reviews retrieved successfully: ${userId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "User reviews retrieved successfully",
+                reviews: reviews,
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get user reviews controller: ${error.message}`);
+            console.error(`Failed to get user reviews controller: ${error.message}`);
+            next(error);
+        }
+    }
 }
+
+export const ReviewController = new ReviewControllerClass();
