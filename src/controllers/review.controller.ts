@@ -4,7 +4,7 @@ import { AppError } from "../utils/AppError";
 import { CreateReviewDto } from "../types/review/review-create.dto";
 import { ReviewService } from "../services/review.service";
 
-class BrandControllerClass {
+class ReviewControllerClass {
   async createReview(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user?.id;
@@ -53,6 +53,26 @@ class BrandControllerClass {
       });
     } catch (error: any) {
       logger.error(`Failed to get Reviews controller: ${error.message}`);
+      console.error(`Failed to get Review controller: ${error.message}`);
+      next(error);
+    }
+  }
+  async getReview(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { reviewId } = req.params;
+
+      const review = await ReviewService.getReview(reviewId as string);
+
+      logger.info(`Review retrieved successfully: ${reviewId}`);
+      console.log(`Review retrieved successfully: ${reviewId}`);
+
+      res.status(200).json({
+        success: true,
+        message: "Review retrieved successfully",
+        review: review,
+      });
+    } catch (error: any) {
+      logger.error(`Failed to get Review controller: ${error.message}`);
       console.error(`Failed to get Review controller: ${error.message}`);
       next(error);
     }
