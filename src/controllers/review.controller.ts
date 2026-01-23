@@ -137,7 +137,7 @@ class ReviewControllerClass {
     }
     async getUserReview(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req.user?.id;
+            const {userId} = req.params
 
             if (!userId) {
                 logger.error(`User ID not found in request`);
@@ -145,7 +145,7 @@ class ReviewControllerClass {
                 throw new AppError("User ID not found in request", 400);
             }
 
-            const reviews = await ReviewService.getUserReview(userId);
+            const reviews = await ReviewService.getUserReview(userId as string);
 
             logger.info(`User reviews retrieved successfully: ${userId}`);
             console.log(`User reviews retrieved successfully: ${userId}`);
