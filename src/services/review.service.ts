@@ -119,7 +119,7 @@ class ReviewServiceClass {
             throw new AppError(`Error to update Review`, 500)
         }
     }
-    async deleteReview(reviewId: string, userId: string, payload: UpdateReviewDto) {
+    async deleteReview(reviewId: string, userId: string) {
         try {
             const foundReview = await Review.findById(reviewId)
             if (!foundReview) {
