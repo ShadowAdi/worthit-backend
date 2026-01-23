@@ -16,12 +16,24 @@ class ReviewServiceClass {
                 throw new AppError(`Brand not found with id: ${brandId}`, 404)
             }
 
+            // Check if brand has been launched for at least 7 days
+            if (brandFound.launchAt) {
+                const launchDate = new Date(brandFound.launchAt);
+                const currentDate = new Date();
+                const daysSinceLaunch = Math.floor((currentDate.getTime() - launchDate.getTime()) / (1000 * 60 * 60 * 24));
+
+                if (daysSinceLaunch < 7) {
+                    logger.error(`Cannot review brand ${brandId} - only ${daysSinceLaunch} days since launch. Must wait ${7 - daysSinceLaunch} more days.`)
+                    throw new AppError(`Reviews can only be submitted 7 days after the brand launch date. Please wait ${7 - daysSinceLaunch} more days.`, 400)
+                }
+            }
+
             const isReviewExists = await Review.exists({
                 brandId: brandId,
                 userId: userId
             })
 
-            if (!isReviewExists) {
+            if (isReviewExists) {
                 logger.error(`Review already exists for this user and brand`)
                 throw new AppError(`Review already exists for this user and brand`, 409)
             }
