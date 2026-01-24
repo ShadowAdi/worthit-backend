@@ -12,7 +12,7 @@ export interface UpdateBrandDto {
     }[];
     demoVideo?: string;
 
-    category?: string;
+    category?: [string];
     howToUse?: string;
 
     websiteUrl?: string;

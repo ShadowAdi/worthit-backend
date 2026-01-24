@@ -91,7 +91,7 @@ const schema = new Schema<IBrand>(
             trim: true,
         },
         category: {
-            type: String,
+            type: [String],
             required: true,
             trim: true,
         },

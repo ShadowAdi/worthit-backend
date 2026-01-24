@@ -76,11 +76,8 @@ export const createBrandValidator = [
     body("category")
         .notEmpty()
         .withMessage("Category is required")
-        .isString()
-        .withMessage("Category must be a string")
-        .trim()
-        .isLength({ min: 2, max: 50 })
-        .withMessage("Category must be between 2 and 50 characters"),
+        .isArray()
+        .withMessage("Category must be an array"),
 
     body("howToUse")
         .notEmpty()
@@ -201,12 +198,10 @@ export const updateBrandValidator = [
         .withMessage("Demo video must be a valid URL"),
 
     body("category")
-        .optional()
-        .isString()
-        .withMessage("Category must be a string")
-        .trim()
-        .isLength({ min: 2, max: 50 })
-        .withMessage("Category must be between 2 and 50 characters"),
+        .notEmpty()
+        .withMessage("Category is required")
+        .isArray()
+        .withMessage("Category must be an array"),
 
     body("howToUse")
         .optional()

@@ -14,7 +14,7 @@ export interface IBrand extends Document {
     }[];
     demoVideo?: string; 
 
-    category: string; 
+    category: [string]; 
     howToUse: string;
 
     websiteUrl?: string; 
