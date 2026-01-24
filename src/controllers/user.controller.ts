@@ -20,7 +20,7 @@ class UserControllerClass {
             res.status(201).json({
                 success: true,
                 message: "User created successfully",
-                data: user
+                user: user
             });
         } catch (error: any) {
             logger.error(`Failed to create user controller: ${error.message}`);
