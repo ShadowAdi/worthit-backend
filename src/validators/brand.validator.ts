@@ -12,6 +12,12 @@ export const createBrandValidator = [
         .isLength({ min: 2, max: 100 })
         .withMessage("Brand name must be between 2 and 100 characters"),
 
+
+    body("one_liner")
+        .isString()
+        .withMessage("Description must be a string")
+        .trim(),
+
     body("description")
         .notEmpty()
         .withMessage("Description is required")
@@ -150,6 +156,12 @@ export const updateBrandValidator = [
         .trim()
         .isLength({ min: 10, max: 2000 })
         .withMessage("Description must be between 10 and 2000 characters"),
+
+    body("one_liner")
+        .optional()
+        .isString()
+        .withMessage("Description must be a string")
+        .trim(),
 
     body("slug")
         .optional()

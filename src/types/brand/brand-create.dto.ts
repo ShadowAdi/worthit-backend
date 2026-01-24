@@ -11,6 +11,7 @@ export interface CreateBrandDto {
         alt: string;
         order: number;
     }[];
+    one_liner: string
     demoVideo?: string;
 
     category: [string];

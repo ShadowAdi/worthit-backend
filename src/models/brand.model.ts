@@ -70,6 +70,11 @@ const schema = new Schema<IBrand>(
             required: true,
             trim: true,
         },
+        one_liner: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         slug: {
             type: String,
             required: true,
