@@ -49,7 +49,11 @@ const schema = new Schema<IReview>(
         helpful: [{
             type: Schema.Types.ObjectId,
             ref: "User"
-        }]
+        }],
+        helpfulCount: {
+            type: Number,
+            default: 0
+        }
     }, {
     timestamps: true
 }
