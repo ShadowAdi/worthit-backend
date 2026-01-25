@@ -70,7 +70,7 @@ class ReviewServiceClass {
 
             const reviews = await Review.find({
                 brandId: brandId
-            })
+            }).populate("userId", "username profile_url").populate("brandId", "name slug").lean()
 
             return reviews
         } catch (error) {
