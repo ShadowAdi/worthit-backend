@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Model, Schema, Types } from "mongoose";
 import { IReview } from "../interfaces/review.interface";
 
 const schema = new Schema<IReview>(
@@ -46,6 +46,10 @@ const schema = new Schema<IReview>(
             type: Boolean,
             default: false
         },
+        helpful: [{
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }]
     }, {
     timestamps: true
 }

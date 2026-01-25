@@ -10,6 +10,7 @@ export interface IReview extends Document {
     recommendation: "recommend" | "not_recommend";
     additionalNotes?: string;
     isEdited: boolean;
+    helpful: Types.ObjectId|string[];
     createdAt: Date;
     updatedAt: Date;
 }
