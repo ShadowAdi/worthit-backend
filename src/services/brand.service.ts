@@ -44,6 +44,7 @@ class BrandClassService {
         try {
             const brands = await Brand.find()
                 .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
                 .lean();
 
             return {
