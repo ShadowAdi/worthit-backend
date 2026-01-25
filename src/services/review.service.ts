@@ -169,6 +169,44 @@ class ReviewServiceClass {
             throw new AppError(`Error to increase Review`, 500)
         }
     }
+    async decreaseHelpfulReview(reviewId: string, userId: string, payload: UpdateReviewDto) {
+        try {
+            const foundReview = await Review.findById(reviewId)
+            if (!foundReview) {
+                logger.error(`Review not found with id: ${reviewId}`)
+                throw new AppError(`Review not found with id: ${reviewId}`, 404)
+            }
+
+            if (foundReview.helpful.find(id => id.toString() !== userId)) {
+                logger.error(`You never marked this review as helpful`)
+                throw new AppError("You never marked this review as helpful", 400);
+            }
+
+            const updatedReview = await Review.findByIdAndUpdate(reviewId, {
+                $pull: {
+                    helpful: userId
+                },
+                $inc: {
+                    helpfulCount: -1
+                }
+            }, {
+                new: true,
+                runValidators: true
+            })
+            
+            if (!updatedReview) {
+            console.error(`Error to decrease Review: ${reviewId}`)
+            logger.error(`Error to decrease Review: ${reviewId}`)
+            throw new AppError(`Error to decrease Review`, 500)
+            }
+            
+            return updatedReview._id
+        } catch (error) {
+            console.error(`Error to decrease Review: ${error}`)
+            logger.error(`Error to decrease Review: ${error}`)
+            throw new AppError(`Error to decrease Review`, 500)
+        }
+    }
     async deleteReview(reviewId: string, userId: string) {
         try {
             const foundReview = await Review.findById(reviewId)
