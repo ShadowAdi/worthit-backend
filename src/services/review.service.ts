@@ -131,7 +131,7 @@ class ReviewServiceClass {
             throw new AppError(`Error to update Review`, 500)
         }
     }
-    async increaseHelpfulReview(reviewId: string, userId: string, payload: UpdateReviewDto) {
+    async increaseHelpfulReview(reviewId: string, userId: string) {
         try {
             const foundReview = await Review.findById(reviewId)
             if (!foundReview) {
@@ -157,19 +157,20 @@ class ReviewServiceClass {
             })
             
             if (!updatedReview) {
-            console.error(`Error to increase Review: ${reviewId}`)
-            logger.error(`Error to increase Review: ${reviewId}`)
-            throw new AppError(`Error to increase Review`, 500)
+                console.error(`Error to increase helpful review: ${reviewId}`)
+                logger.error(`Error to increase helpful review: ${reviewId}`)
+                throw new AppError(`Error to increase helpful review`, 500)
             }
             
+            logger.info(`Review ${reviewId} marked as helpful by user ${userId}`)
             return updatedReview._id
         } catch (error) {
-            console.error(`Error to increase Review: ${error}`)
-            logger.error(`Error to increase Review: ${error}`)
-            throw new AppError(`Error to increase Review`, 500)
+            console.error(`Error to increase helpful review: ${error}`)
+            logger.error(`Error to increase helpful review: ${error}`)
+            throw error
         }
     }
-    async decreaseHelpfulReview(reviewId: string, userId: string, payload: UpdateReviewDto) {
+    async decreaseHelpfulReview(reviewId: string, userId: string) {
         try {
             const foundReview = await Review.findById(reviewId)
             if (!foundReview) {
@@ -177,7 +178,8 @@ class ReviewServiceClass {
                 throw new AppError(`Review not found with id: ${reviewId}`, 404)
             }
 
-            if (foundReview.helpful.find(id => id.toString() !== userId)) {
+            // Fix: Check if user has NOT marked as helpful (should be !some, not find !== )
+            if (!foundReview.helpful.some(id => id.toString() === userId)) {
                 logger.error(`You never marked this review as helpful`)
                 throw new AppError("You never marked this review as helpful", 400);
             }
@@ -195,16 +197,17 @@ class ReviewServiceClass {
             })
             
             if (!updatedReview) {
-            console.error(`Error to decrease Review: ${reviewId}`)
-            logger.error(`Error to decrease Review: ${reviewId}`)
-            throw new AppError(`Error to decrease Review`, 500)
+                console.error(`Error to decrease helpful review: ${reviewId}`)
+                logger.error(`Error to decrease helpful review: ${reviewId}`)
+                throw new AppError(`Error to decrease helpful review`, 500)
             }
             
+            logger.info(`Review ${reviewId} unmarked as helpful by user ${userId}`)
             return updatedReview._id
         } catch (error) {
-            console.error(`Error to decrease Review: ${error}`)
-            logger.error(`Error to decrease Review: ${error}`)
-            throw new AppError(`Error to decrease Review`, 500)
+            console.error(`Error to decrease helpful review: ${error}`)
+            logger.error(`Error to decrease helpful review: ${error}`)
+            throw error
         }
     }
     async deleteReview(reviewId: string, userId: string) {

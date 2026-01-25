@@ -64,3 +64,21 @@ reviewRouter.delete(
     validate,
     ReviewController.deleteReview.bind(ReviewController)
 );
+
+// Mark a review as helpful (requires authentication)
+reviewRouter.post(
+    "/:reviewId/helpful",
+    AuthMiddleware,
+    reviewIdValidator,
+    validate,
+    ReviewController.increaseHelpfulReview.bind(ReviewController)
+);
+
+// Unmark a review as helpful (requires authentication)
+reviewRouter.delete(
+    "/:reviewId/helpful",
+    AuthMiddleware,
+    reviewIdValidator,
+    validate,
+    ReviewController.decreaseHelpfulReview.bind(ReviewController)
+);

@@ -161,6 +161,66 @@ class ReviewControllerClass {
             next(error);
         }
     }
+    async increaseHelpfulReview(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+            const { reviewId } = req.params;
+
+            if (!userId) {
+                logger.error(`User ID not found in request`);
+                console.error(`User ID not found in request`);
+                throw new AppError("User ID not found in request", 400);
+            }
+
+            const updatedReviewId = await ReviewService.increaseHelpfulReview(
+                reviewId as string,
+                userId
+            );
+
+            logger.info(`Review marked as helpful: ${reviewId} by user: ${userId}`);
+            console.log(`Review marked as helpful: ${reviewId} by user: ${userId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "Review marked as helpful",
+                reviewId: updatedReviewId,
+            });
+        } catch (error: any) {
+            logger.error(`Failed to mark review as helpful: ${error.message}`);
+            console.error(`Failed to mark review as helpful: ${error.message}`);
+            next(error);
+        }
+    }
+    async decreaseHelpfulReview(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+            const { reviewId } = req.params;
+
+            if (!userId) {
+                logger.error(`User ID not found in request`);
+                console.error(`User ID not found in request`);
+                throw new AppError("User ID not found in request", 400);
+            }
+
+            const updatedReviewId = await ReviewService.decreaseHelpfulReview(
+                reviewId as string,
+                userId
+            );
+
+            logger.info(`Review unmarked as helpful: ${reviewId} by user: ${userId}`);
+            console.log(`Review unmarked as helpful: ${reviewId} by user: ${userId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "Review unmarked as helpful",
+                reviewId: updatedReviewId,
+            });
+        } catch (error: any) {
+            logger.error(`Failed to unmark review as helpful: ${error.message}`);
+            console.error(`Failed to unmark review as helpful: ${error.message}`);
+            next(error);
+        }
+    }
 }
 
 export const ReviewController = new ReviewControllerClass();
