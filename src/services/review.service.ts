@@ -217,7 +217,7 @@ class ReviewServiceClass {
                 logger.error(`Review not found with id: ${reviewId}`)
                 throw new AppError(`Review not found with id: ${reviewId}`, 404)
             }
-            if (foundReview.userId !== userId) {
+            if (String(foundReview.userId) !== userId) {
                 logger.error(`Failed to delete review with id: ${reviewId} due to user mismatch`)
                 throw new AppError(`Failed to delete review with id: ${reviewId} due to user mismatch`, 404)
             }
