@@ -31,14 +31,15 @@ brandRouter.get(
     BrandController.getBrandByNameOrSlug.bind(BrandController)
 );
 
-// Get brand by ID
+// Get brand by slug
 brandRouter.get(
-    "/slog/:slug",
+    "/slug/:slug",
     brandIdValidator,
     validate,
-    BrandController.getBrand.bind(BrandController)
+    BrandController.getBrandBySlug.bind(BrandController)
 );
 
+// Get brand by ID
 brandRouter.get(
     "/:brandId",
     brandIdValidator,
