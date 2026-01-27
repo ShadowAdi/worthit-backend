@@ -34,9 +34,16 @@ class UserClassService {
         }
     }
 
-    async getAllUser() {
+    async getAllUser(username?: string) {
         try {
-            const users = await User.find();
+            let query: any = {};
+            
+            if (username) {
+                // Case-insensitive partial match search
+                query.username = { $regex: username, $options: 'i' };
+            }
+
+            const users = await User.find(query).select('-password');
 
             return {
                 users,

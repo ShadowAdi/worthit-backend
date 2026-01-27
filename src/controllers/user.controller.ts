@@ -31,10 +31,11 @@ class UserControllerClass {
 
     async getAllUsers(req: Request, res: Response, next: NextFunction) {
         try {
-            logger.info(`Fetching all users`);
-            console.log(`Fetching all users`);
+            const { username } = req.query;
+            logger.info(`Fetching all users${username ? ` with username filter: ${username}` : ''}`);
+            console.log(`Fetching all users${username ? ` with username filter: ${username}` : ''}`);
 
-            const result = await UserService.getAllUser();
+            const result = await UserService.getAllUser(username as string | undefined);
 
             logger.info(`Retrieved ${result.totalUsers} users successfully`);
             console.log(`Retrieved ${result.totalUsers} users successfully`);
