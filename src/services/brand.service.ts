@@ -92,7 +92,7 @@ class BrandClassService {
                 throw new AppError(`Failed to get all brand`, 400)
             }
 
-            const reviews = await ReviewService.getAllReview(brand.id)
+            const reviews = await ReviewService.getAllReview(String(brand._id))
 
             return { brand, reviews };
         } catch (error) {
