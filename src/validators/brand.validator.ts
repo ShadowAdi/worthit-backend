@@ -258,6 +258,29 @@ export const updateBrandValidator = [
         .optional()
         .isISO8601()
         .withMessage("Launch date must be a valid ISO 8601 date"),
+
+    body("team")
+        .optional()
+        .isArray()
+        .withMessage("Team must be an array"),
+
+    body("team.*.role")
+        .optional()
+        .isString()
+        .withMessage("Team member role must be a string")
+        .trim()
+        .isIn(["founder", "co-founder", "team-member"])
+        .withMessage("Team member role must be one of: founder, co-founder, team-member"),
+
+    body("team.*.userId")
+        .optional()
+        .isMongoId()
+        .withMessage("Team member user ID must be a valid MongoDB ObjectId"),
+
+    body("team.*.isVerified")
+        .optional()
+        .isBoolean()
+        .withMessage("Team member isVerified must be a boolean"),
 ];
 
 export const brandIdValidator = [
