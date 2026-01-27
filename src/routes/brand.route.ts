@@ -7,6 +7,7 @@ import {
     updateBrandValidator,
     brandIdValidator,
     brandIdentifierValidator,
+    brandSlugValidator,
 } from "../validators/brand.validator";
 
 export const brandRouter = Router();
@@ -34,7 +35,7 @@ brandRouter.get(
 // Get brand by slug
 brandRouter.get(
     "/slug/:slug",
-    brandIdValidator,
+    brandSlugValidator,
     validate,
     BrandController.getBrandBySlug.bind(BrandController)
 );
