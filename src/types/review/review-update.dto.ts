@@ -4,6 +4,6 @@ export interface UpdateReviewDto {
     worthTheMoney?: boolean;
     biggestDisappointment?: string;
     whoShouldNotBuy?: string;
-    recommendation: "recommend" | "not_recommend";
+    recommendation?: "recommend" | "not_recommend";
     additionalNotes?: string;
 }
