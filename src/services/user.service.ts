@@ -51,6 +51,25 @@ class UserClassService {
         }
     }
 
+     async getUsersByUsername(username:string) {
+        try {
+            const users = await User.find({
+                username: { $regex: username, $options: 'i' }
+            });
+
+            return {
+                users,
+                totalUsers: users.length,
+            };
+        } catch (error: any) {
+            logger.error(`Failed to get user by username service: ${error.message}`);
+            console.error(`Failed to get all user by usernames service: ${error.message}`);
+            throw error instanceof AppError
+                ? error
+                : new AppError("Internal Server Error", 500);
+        }
+    }
+
     async getUser(userId: string) {
         try {
             const user = await User.findById(userId);

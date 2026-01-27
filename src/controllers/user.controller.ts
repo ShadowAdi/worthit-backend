@@ -51,6 +51,22 @@ class UserControllerClass {
         }
     }
 
+    async getUsersByUsername(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { username } = req.query
+            const result = await UserService.getUsersByUsername(String(username));
+
+            res.status(200).json({
+                success: true,
+                data: result
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get all users by name controller: ${error.message}`);
+            console.error(`Failed to get all users by name controller: ${error.message}`);
+            next(error);
+        }
+    }
+
     async getUserById(req: Request, res: Response, next: NextFunction) {
         try {
             const { userId } = req.params;
@@ -105,7 +121,7 @@ class UserControllerClass {
             res.status(200).json({
                 success: true,
                 message: "User updated successfully",
-                userId: updatedUserId 
+                userId: updatedUserId
             });
         } catch (error: any) {
             logger.error(`Failed to update user controller: ${error.message}`);

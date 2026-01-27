@@ -17,6 +17,8 @@ userRouter.post(
 // Get all users
 userRouter.get("/", UserController.getAllUsers.bind(UserController));
 
+userRouter.get("/by-name", UserController.getAllUsers.bind(UserController));
+
 // Get user by ID
 userRouter.get(
     "/:userId",
