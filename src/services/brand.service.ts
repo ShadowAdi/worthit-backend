@@ -185,6 +185,7 @@ class BrandClassService {
             if (updateBrandPayload.name !== undefined) updateData.name = updateBrandPayload.name;
             if (updateBrandPayload.description !== undefined) updateData.description = updateBrandPayload.description;
             if (updateBrandPayload.slug !== undefined) updateData.slug = updateBrandPayload.slug;
+            if (updateBrandPayload.one_liner !== undefined) updateData.one_liner = updateBrandPayload.one_liner;
             if (updateBrandPayload.whyItExists !== undefined) updateData.whyItExists = updateBrandPayload.whyItExists;
             if (updateBrandPayload.demoVideo !== undefined) updateData.demoVideo = updateBrandPayload.demoVideo;
             if (updateBrandPayload.category !== undefined) updateData.category = updateBrandPayload.category;
