@@ -201,7 +201,13 @@ class BrandClassService {
             if (updateBrandPayload.websiteUrl !== undefined) updateData.websiteUrl = updateBrandPayload.websiteUrl;
             if (updateBrandPayload.launchAt !== undefined) updateData.launchAt = updateBrandPayload.launchAt;
 
-            if (updateBrandPayload.status !== undefined) updateData.status = updateBrandPayload.status;
+            if (updateBrandPayload.status !== undefined) {
+                updateData.status = updateBrandPayload.status;
+                // Set publishedAt when status changes to published
+                if (updateBrandPayload.status === "published") {
+                    updateData.publishedAt = new Date();
+                }
+            }
 
 
             if (updateBrandPayload.country !== undefined) {
@@ -216,6 +222,16 @@ class BrandClassService {
                 updateData.socialLinks = updateBrandPayload.socialLinks;
             }
 
+            // Format team members if provided
+            if (updateBrandPayload.team !== undefined) {
+                const formattedTeam = updateBrandPayload.team.map(member => ({
+                    role: member.role,
+                    userId: new Types.ObjectId(member.userId),
+                    isVerified: member.isVerified ?? false
+                }));
+                updateData.team = formattedTeam;
+            }
+
             const updatedBrand = await Brand.findByIdAndUpdate(
                 brandId,
                 { $set: updateData },
@@ -223,7 +239,10 @@ class BrandClassService {
                     new: true,
                     runValidators: true
                 }
-            ).lean();
+            )
+                .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
+                .lean();
 
             return updatedBrand;
         } catch (error) {

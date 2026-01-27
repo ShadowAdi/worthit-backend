@@ -231,8 +231,7 @@ export const updateBrandValidator = [
         .withMessage("Demo video must be a valid URL"),
 
     body("category")
-        .notEmpty()
-        .withMessage("Category is required")
+        .optional()
         .isArray()
         .withMessage("Category must be an array"),
 
@@ -302,6 +301,13 @@ export const updateBrandValidator = [
         .optional()
         .isBoolean()
         .withMessage("Team member isVerified must be a boolean"),
+
+    body("status")
+        .optional()
+        .isString()
+        .withMessage("Status must be a string")
+        .isIn(["draft", "published"])
+        .withMessage("Status must be either 'draft' or 'published'"),
 ];
 
 export const brandIdValidator = [
