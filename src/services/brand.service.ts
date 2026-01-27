@@ -82,7 +82,7 @@ class BrandClassService {
 
     async getBrandBySlug(slug: string) {
         try {
-            const brand = await Brand.findOne({ slug: slug })
+            const brand = await Brand.findOne({ slug: slug, status: "published" })
                 .populate("founderId", "username email profile_url")
                 .populate("team.userId", "username email profile_url")
                 .lean();
