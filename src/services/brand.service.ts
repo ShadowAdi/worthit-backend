@@ -51,7 +51,7 @@ class BrandClassService {
 
     async getAllBrands() {
         try {
-            const brands = await Brand.find()
+            const brands = await Brand.find({status:"published"})
                 .populate("founderId", "username email profile_url")
                 .populate("team.userId", "username email profile_url")
                 .lean();
