@@ -69,6 +69,27 @@ class BrandClassService {
         }
     }
 
+    async getUserBrands(userId: string) {
+        try {
+            const brands = await Brand.find({ founderId: userId })
+                .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
+                .sort({ createdAt: -1 })
+                .lean();
+
+            return {
+                totalBrands: brands.length,
+                brands
+            };
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(`Failed to get user brands: ${errorMessage}`);
+            throw new AppError(`Failed to get user brands: ${errorMessage}`, 500);
+        }
+    }
+
     async getBrand(brandId: string) {
         try {
             const brand = await Brand.findById(brandId)

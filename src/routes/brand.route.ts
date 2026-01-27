@@ -25,6 +25,13 @@ brandRouter.post(
 // Get all brands
 brandRouter.get("/", BrandController.getAllBrands.bind(BrandController));
 
+// Get all brands created by authenticated user (requires authentication)
+brandRouter.get(
+    "/user/my-brands",
+    AuthMiddleware,
+    BrandController.getUserBrands.bind(BrandController)
+);
+
 // Get brand by name or slug
 brandRouter.get(
     "/search/:identifier",

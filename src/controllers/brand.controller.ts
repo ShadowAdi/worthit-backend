@@ -59,6 +59,36 @@ class BrandControllerClass {
         }
     }
 
+    async getUserBrands(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                logger.error(`User ID not found in request`);
+                console.error(`User ID not found in request`);
+                throw new AppError("User ID not found in request", 401);
+            }
+
+            logger.info(`Fetching brands for user: ${userId}`);
+            console.log(`Fetching brands for user: ${userId}`);
+
+            const result = await BrandService.getUserBrands(userId);
+
+            logger.info(`Retrieved ${result.totalBrands} brands for user: ${userId}`);
+            console.log(`Retrieved ${result.totalBrands} brands for user: ${userId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "User brands retrieved successfully",
+                data: result
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get user brands controller: ${error.message}`);
+            console.error(`Failed to get user brands controller: ${error.message}`);
+            next(error);
+        }
+    }
+
     async getBrand(req: Request, res: Response, next: NextFunction) {
         try {
             const { brandId } = req.params;
