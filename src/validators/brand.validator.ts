@@ -268,6 +268,12 @@ export const brandIdValidator = [
         .withMessage("Brand ID must be a valid MongoDB ObjectId"),
 ];
 
+export const brandSlugValidator = [
+    param("slug")
+        .notEmpty()
+        .withMessage("Slug is required")
+];
+
 export const brandIdentifierValidator = [
     param("identifier")
         .notEmpty()

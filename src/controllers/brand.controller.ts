@@ -95,6 +95,36 @@ class BrandControllerClass {
         }
     }
 
+    async getBrandBySlug(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { slug } = req.params;
+
+            if (!slug) {
+                logger.error(`Slug not provided`);
+                console.error(`Slug not provided`);
+                throw new AppError("Slug not provided", 404);
+            }
+
+            const {brand,reviews} = await BrandService.getBrandBySlug(slug as string);
+
+            if (!brand) {
+                logger.error(`Brand not found: ${slug}`);
+                console.error(`Brand not found: ${slug}`);
+                throw new AppError("Brand not found", 404);
+            }
+
+            res.status(200).json({
+                success: true,
+                message: "Brand retrieved successfully",
+                data: {brand,reviews}
+            });
+        } catch (error: any) {
+            logger.error(`Failed to get brand controller: ${error.message}`);
+            console.error(`Failed to get brand controller: ${error.message}`);
+            next(error);
+        }
+    }
+
     async getBrandByNameOrSlug(req: Request, res: Response, next: NextFunction) {
         try {
             const { identifier } = req.params;

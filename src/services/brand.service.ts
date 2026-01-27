@@ -4,6 +4,7 @@ import { Brand } from "../models/brand.model";
 import { CreateBrandDto } from "../types/brand/brand-create.dto";
 import { AppError } from "../utils/AppError";
 import { UpdateBrandDto } from "../types/brand/brand-update.dto";
+import { ReviewService } from "./review.service";
 
 class BrandClassService {
     async createBrand(payload: CreateBrandDto, userId: string | Types.ObjectId) {
@@ -74,6 +75,32 @@ class BrandClassService {
 
             logger.error(
                 `Failed to get brand by id:${brandId} error: ${errorMessage}`
+            );
+            throw new AppError(errorMessage, 500);
+        }
+    }
+
+    async getBrandBySlug(slug: string) {
+        try {
+            const brand = await Brand.findOne({ slug: slug })
+                .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
+                .lean();
+
+            if (!brand) {
+                logger.error(`Failed to get all brand`)
+                throw new AppError(`Failed to get all brand`, 400)
+            }
+
+            const reviews = await ReviewService.getAllReview(brand.id)
+
+            return { brand, reviews };
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Unknown error';
+
+            logger.error(
+                `Failed to get brand by slug:${slug} error: ${errorMessage}`
             );
             throw new AppError(errorMessage, 500);
         }
