@@ -28,4 +28,10 @@ export interface CreateBrandDto {
     country: string;
 
     launchAt?: Date;
+    
+    team?: {
+        role: string;
+        userId: string;
+        isVerified?: boolean;
+    }[];
 }

@@ -26,8 +26,16 @@ class BrandClassService {
                 throw new AppError(`Brand with same name already exists`, 409)
             }
 
+            // Format team members if provided
+            const formattedTeam = payload.team ? payload.team.map(member => ({
+                role: member.role,
+                userId: new Types.ObjectId(member.userId),
+                isVerified: member.isVerified ?? false
+            })) : undefined;
+
             const newbrand = await Brand.create({
                 ...payload,
+                team: formattedTeam,
                 isIndianBrand: payload.country.toLowerCase().trim() === "india" ? true : false,
                 founderId: userId,
                 publishedAt: payload.status === "draft" ? null : new Date()
