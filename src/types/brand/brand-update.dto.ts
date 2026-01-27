@@ -5,7 +5,7 @@ export interface UpdateBrandDto {
 
     whyItExists?: string;
 
-    one_liner: string
+    one_liner?: string
 
     images?: {
         url?: string;
