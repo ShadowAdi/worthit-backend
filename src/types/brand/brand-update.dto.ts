@@ -23,6 +23,8 @@ export interface UpdateBrandDto {
         url: string;
     }[];
 
+    status?: "draft" | "published";
+
     country?: string;
 
     launchAt?: string;

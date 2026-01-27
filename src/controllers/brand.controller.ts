@@ -208,14 +208,8 @@ class BrandControllerClass {
                 throw new AppError("Brand ID is required", 404);
             }
 
-            logger.info(`Updating brand ${brandId} by user: ${userId}`);
-            console.log(`Updating brand ${brandId} by user: ${userId}`);
-
             const payload: UpdateBrandDto = req.body;
             const updatedBrand = await BrandService.updateBrand(brandId as string, userId, payload);
-
-            logger.info(`Brand updated successfully: ${brandId}`);
-            console.log(`Brand updated successfully: ${brandId}`);
 
             res.status(200).json({
                 success: true,

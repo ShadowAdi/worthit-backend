@@ -82,7 +82,7 @@ class BrandClassService {
 
     async getBrandBySlug(slug: string) {
         try {
-            const brand = await Brand.findOne({ slug: slug, status: "published" })
+            const brand = await Brand.findOne({ slug: slug })
                 .populate("founderId", "username email profile_url")
                 .populate("team.userId", "username email profile_url")
                 .lean();
@@ -192,6 +192,9 @@ class BrandClassService {
             if (updateBrandPayload.howToUse !== undefined) updateData.howToUse = updateBrandPayload.howToUse;
             if (updateBrandPayload.websiteUrl !== undefined) updateData.websiteUrl = updateBrandPayload.websiteUrl;
             if (updateBrandPayload.launchAt !== undefined) updateData.launchAt = updateBrandPayload.launchAt;
+
+            if (updateBrandPayload.status !== undefined) updateData.status = updateBrandPayload.status;
+
 
             if (updateBrandPayload.country !== undefined) {
                 updateData.country = updateBrandPayload.country;
