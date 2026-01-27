@@ -26,4 +26,10 @@ export interface UpdateBrandDto {
     country?: string;
 
     launchAt?: string;
+
+    team?: {
+        role: 'founder' | 'co-founder' | 'team-member' | string;
+        userId: string;
+        isVerified?: boolean;
+    }[];
 }

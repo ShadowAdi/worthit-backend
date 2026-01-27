@@ -8,6 +8,7 @@ import {
     brandIdValidator,
     brandIdentifierValidator,
     brandSlugValidator,
+    updateBrandTeamValidator,
 } from "../validators/brand.validator";
 
 export const brandRouter = Router();
@@ -73,4 +74,14 @@ brandRouter.post(
     brandIdValidator,
     validate,
     BrandController.increaseBrandView.bind(BrandController)
+);
+
+// Update brand team members (requires authentication)
+brandRouter.patch(
+    "/:brandId/team",
+    AuthMiddleware,
+    brandIdValidator,
+    updateBrandTeamValidator,
+    validate,
+    BrandController.updateBrandTeam.bind(BrandController)
 );

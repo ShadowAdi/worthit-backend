@@ -258,6 +258,54 @@ class BrandControllerClass {
             next(error);
         }
     }
+
+    async updateBrandTeam(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+            const { brandId } = req.params;
+            const { team } = req.body;
+
+            if (!userId) {
+                logger.error(`User ID not found in request`);
+                console.error(`User ID not found in request`);
+                throw new AppError("User ID not found in request", 404);
+            }
+
+            if (!brandId) {
+                logger.error(`Brand ID not provided`);
+                console.error(`Brand ID not provided`);
+                throw new AppError("Brand ID is required", 404);
+            }
+
+            if (!team || !Array.isArray(team)) {
+                logger.error(`Invalid team data provided`);
+                console.error(`Invalid team data provided`);
+                throw new AppError("Team must be an array", 400);
+            }
+
+            logger.info(`Updating team for brand ${brandId} by user: ${userId}`);
+            console.log(`Updating team for brand ${brandId} by user: ${userId}`);
+
+            const updatedBrand = await BrandService.updateBrandTeam(
+                brandId as string,
+                userId,
+                team
+            );
+
+            logger.info(`Brand team updated successfully: ${brandId}`);
+            console.log(`Brand team updated successfully: ${brandId}`);
+
+            res.status(200).json({
+                success: true,
+                message: "Brand team updated successfully",
+                data: updatedBrand
+            });
+        } catch (error: any) {
+            logger.error(`Failed to update brand team controller: ${error.message}`);
+            console.error(`Failed to update brand team controller: ${error.message}`);
+            next(error);
+        }
+    }
 }
 
 export const BrandController = new BrandControllerClass();

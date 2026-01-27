@@ -255,6 +255,63 @@ class BrandClassService {
         }
     }
 
+    async updateBrandTeam(
+        brandId: string,
+        userId: string,
+        teamMembers: {
+            role: 'founder' | 'co-founder' | 'team-member' | string;
+            userId: string;
+            isVerified?: boolean;
+        }[]
+    ) {
+        try {
+            const brandExists = await Brand.exists({
+                _id: brandId,
+                founderId: userId
+            });
+
+            if (!brandExists) {
+                logger.error(`Brand not found or unauthorized: ${brandId}`);
+                throw new AppError(
+                    "Brand not found or you are not authorized",
+                    403
+                );
+            }
+
+            const formattedTeam = teamMembers.map(member => ({
+                role: member.role,
+                userId: new Types.ObjectId(member.userId),
+                isVerified: member.isVerified ?? false
+            }));
+
+            const updatedBrand = await Brand.findByIdAndUpdate(
+                brandId,
+                { $set: { team: formattedTeam } },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            )
+                .populate("founderId", "username email profile_url")
+                .populate("team.userId", "username email profile_url")
+                .lean();
+
+            if (!updatedBrand) {
+                logger.error(`Failed to update brand team: ${brandId}`);
+                throw new AppError("Failed to update brand team", 500);
+            }
+
+            logger.info(`Brand team updated successfully: ${brandId}`);
+            return updatedBrand;
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : "Unknown error";
+
+            logger.error(`Failed to update brand team: ${errorMessage}`);
+            throw new AppError(errorMessage, 500);
+        }
+    }
+
 }
 
 export const BrandService = new BrandClassService()

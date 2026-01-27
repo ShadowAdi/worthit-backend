@@ -284,3 +284,31 @@ export const brandIdentifierValidator = [
         .isLength({ min: 2, max: 100 })
         .withMessage("Brand identifier must be between 2 and 100 characters"),
 ];
+
+export const updateBrandTeamValidator = [
+    body("team")
+        .notEmpty()
+        .withMessage("Team is required")
+        .isArray()
+        .withMessage("Team must be an array"),
+
+    body("team.*.role")
+        .notEmpty()
+        .withMessage("Team member role is required")
+        .isString()
+        .withMessage("Team member role must be a string")
+        .trim()
+        .isIn(["founder", "co-founder", "team-member"])
+        .withMessage("Team member role must be one of: founder, co-founder, team-member"),
+
+    body("team.*.userId")
+        .notEmpty()
+        .withMessage("Team member user ID is required")
+        .isMongoId()
+        .withMessage("Team member user ID must be a valid MongoDB ObjectId"),
+
+    body("team.*.isVerified")
+        .optional()
+        .isBoolean()
+        .withMessage("Team member isVerified must be a boolean"),
+];
