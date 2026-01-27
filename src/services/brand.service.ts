@@ -88,7 +88,7 @@ class BrandClassService {
         }
     }
 
-    async getBrandBySlug(slug: string) {
+    async getBrandBySlug(slug: string, userId?: string) {
         try {
             const brand = await Brand.findOne({ slug: slug })
                 .populate("founderId", "username email profile_url")
@@ -98,6 +98,17 @@ class BrandClassService {
             if (!brand) {
                 logger.error(`Failed to get all brand`)
                 throw new AppError(`Failed to get all brand`, 400)
+            }
+
+            // Check if the brand is published OR if the requesting user is the creator
+            const isCreator = userId && brand.founderId && (
+                userId === brand.founderId._id?.toString() || 
+                userId === brand.founderId.toString()
+            );
+
+            if (brand.status !== 'published' && !isCreator) {
+                logger.error(`Unauthorized access to draft brand: ${slug}`);
+                throw new AppError(`Brand not found`, 404);
             }
 
             const reviews = await ReviewService.getAllReview(String(brand._id))

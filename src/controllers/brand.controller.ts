@@ -98,6 +98,7 @@ class BrandControllerClass {
     async getBrandBySlug(req: Request, res: Response, next: NextFunction) {
         try {
             const { slug } = req.params;
+            const userId = req.user?.id; // Optional - will be undefined if not authenticated
 
             if (!slug) {
                 logger.error(`Slug not provided`);
@@ -105,7 +106,7 @@ class BrandControllerClass {
                 throw new AppError("Slug not provided", 404);
             }
 
-            const {brand,reviews} = await BrandService.getBrandBySlug(slug as string);
+            const {brand,reviews} = await BrandService.getBrandBySlug(slug as string, userId);
 
             if (!brand) {
                 logger.error(`Brand not found: ${slug}`);

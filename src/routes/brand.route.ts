@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { BrandController } from "../controllers/brand.controller";
 import { validate } from "../middlewares/validation.middleware";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { AuthMiddleware, OptionalAuthMiddleware } from "../middlewares/auth.middleware";
 import {
     createBrandValidator,
     updateBrandValidator,
@@ -36,6 +36,7 @@ brandRouter.get(
 // Get brand by slug
 brandRouter.get(
     "/slug/:slug",
+    OptionalAuthMiddleware,
     brandSlugValidator,
     validate,
     BrandController.getBrandBySlug.bind(BrandController)
