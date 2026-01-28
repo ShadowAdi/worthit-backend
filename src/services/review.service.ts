@@ -111,41 +111,69 @@ class ReviewServiceClass {
             throw new AppError(`Error in getting all reviews`, 500)
         }
     }
-    async updateReview(reviewId: string, userId: string, payload: UpdateReviewDto) {
+    async updateReview(
+        reviewId: string,
+        userId: string,
+        payload: UpdateReviewDto
+    ) {
         try {
             const foundReview = await Review.findById(reviewId)
             if (!foundReview) {
-                logger.error(`Review not found with id: ${reviewId}`)
                 throw new AppError(`Review not found with id: ${reviewId}`, 404)
             }
+
             if (String(foundReview.userId) !== userId) {
-                logger.error(`Failed to update review with id: ${reviewId} due to user mismatch`)
-                throw new AppError(`Failed to update review with id: ${reviewId} due to user mismatch`, 404)
+                throw new AppError(`User not allowed to update this review`, 403)
             }
-            const updatedReview = await Review.findByIdAndUpdate(reviewId, {
-                ...payload,
-                isEdited: true,
-            }, {
-                new: true,
-                runValidators: true
-            }).lean()
+
+            const oldRecommendation = foundReview.recommendation
+            const newRecommendation = payload.recommendation
+
+            const updatedReview = await Review.findByIdAndUpdate(
+                reviewId,
+                {
+                    ...payload,
+                    isEdited: true,
+                },
+                { new: true, runValidators: true }
+            ).lean()
+
             if (!updatedReview) {
-                logger.error(`Failed to update review: ${updatedReview}`)
-                throw new AppError(`Failed to update review: ${updatedReview}`, 500)
+                throw new AppError(`Failed to update review`, 500)
             }
-            await Brand.findByIdAndUpdate(foundReview.id, {
-                $inc: {
-                    recommendCount: payload.recommendation === "recommend" ? 1 : 0,
-                    notRecommendCount: payload.recommendation === "not_recommend" ? 1 : 0,
+
+            // 🔥 Only update counts if recommendation changed
+            if (oldRecommendation !== newRecommendation) {
+                const inc: Record<string, number> = {}
+
+                // decrease old
+                if (oldRecommendation === "recommend") {
+                    inc.recommendCount = -1
                 }
-            })
+                if (oldRecommendation === "not_recommend") {
+                    inc.notRecommendCount = -1
+                }
+
+                // increase new
+                if (newRecommendation === "recommend") {
+                    inc.recommendCount = (inc.recommendCount ?? 0) + 1
+                }
+                if (newRecommendation === "not_recommend") {
+                    inc.notRecommendCount = (inc.notRecommendCount ?? 0) + 1
+                }
+
+                await Brand.findByIdAndUpdate(foundReview.brandId, {
+                    $inc: inc,
+                })
+            }
+
             return updatedReview._id
         } catch (error) {
-            console.error(`Error to update Review: ${error}`)
-            logger.error(`Error to update Review: ${error}`)
-            throw new AppError(`Error to update Review`, 500)
+            logger.error(`Error updating review: ${error}`)
+            throw new AppError(`Error updating review`, 500)
         }
     }
+    
     async increaseHelpfulReview(reviewId: string, userId: string) {
         try {
             const foundReview = await Review.findById(reviewId)
