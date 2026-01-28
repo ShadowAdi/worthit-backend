@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IUser } from "../interfaces/user.interface";
+import type { IUser } from "../interfaces/user.interface.js";
 
 export const SocialLinkSchema = new Schema(
     {

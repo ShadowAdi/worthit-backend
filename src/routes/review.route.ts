@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { ReviewController } from "../controllers/review.controller";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
-import { validate } from "../middlewares/validation.middleware";
+import { ReviewController } from "../controllers/review.controller.js";
+import { AuthMiddleware } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validation.middleware.js";
 import {
     createReviewValidator,
     updateReviewValidator,
     reviewIdValidator,
     brandIdValidator,
     userIdValidator
-} from "../validators/review.validator";
+} from "../validators/review.validator.js";
 
 export const reviewRouter = Router();
 

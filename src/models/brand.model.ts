@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IBrand } from "../interfaces/brand.interface";
+import type { IBrand } from "../interfaces/brand.interface.js";
 
 const ImageSchema = new Schema(
     {

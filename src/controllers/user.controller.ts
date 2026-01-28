@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { UserService } from "../services/user.service";
-import { CreateUserDto } from "../types/user/create-user.dto";
-import { UpdateUserDto } from "../types/user/update-user.dto";
-import { logger } from "../config/logger";
-import { AppError } from "../utils/AppError";
+import { UserService } from "../services/user.service.js";
+import type { CreateUserDto } from "../types/user/create-user.dto.js";
+import type { UpdateUserDto } from "../types/user/update-user.dto.js";
+import { logger } from "../config/logger.js";
+import { AppError } from "../utils/AppError.js";
 
 class UserControllerClass {
     async createUser(req: Request, res: Response, next: NextFunction) {

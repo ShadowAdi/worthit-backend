@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { DB_URL } from "../config/dotenv";
-import { logger } from "../config/logger";
+import { DB_URL } from "../config/dotenv.js";
+import { logger } from "../config/logger.js";
 
 
 export const initializeConnection = async () => {

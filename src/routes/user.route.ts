@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { UserController } from "../controllers/user.controller";
-import { createUserValidator, updateUserValidator, userIdValidator } from "../validators/user.validator";
-import { validate } from "../middlewares/validation.middleware";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { UserController } from "../controllers/user.controller.js";
+import { createUserValidator, updateUserValidator, userIdValidator } from "../validators/user.validator.js";
+import { validate } from "../middlewares/validation.middleware.js";
+import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 
 export const userRouter = Router();
 

@@ -1,9 +1,9 @@
-import { logger } from "../config/logger";
-import { User } from "../models/user.model";
-import { CreateUserDto } from "../types/user/create-user.dto";
-import { UpdateUserDto } from "../types/user/update-user.dto";
-import { AppError } from "../utils/AppError";
-import { hashPassword } from "../utils/password-utils";
+import { logger } from "../config/logger.js";
+import { User } from "../models/user.model.js";
+import type { CreateUserDto } from "../types/user/create-user.dto.js";
+import type { UpdateUserDto } from "../types/user/update-user.dto.js";
+import { AppError } from "../utils/AppError.js";
+import { hashPassword } from "../utils/password-utils.js";
 
 class UserClassService {
     async createUser(payload: CreateUserDto) {

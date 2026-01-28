@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { logger } from "../config/logger";
-import { AppError } from "../utils/AppError";
-import { CreateReviewDto } from "../types/review/review-create.dto";
-import { ReviewService } from "../services/review.service";
-import { UpdateReviewDto } from "../types/review/review-update.dto";
+import { logger } from "../config/logger.js";
+import { AppError } from "../utils/AppError.js";
+import type { CreateReviewDto } from "../types/review/review-create.dto.js";
+import { ReviewService } from "../services/review.service.js";
+import type { UpdateReviewDto } from "../types/review/review-update.dto.js";
 
 class ReviewControllerClass {
     async createReview(req: Request, res: Response, next: NextFunction) {

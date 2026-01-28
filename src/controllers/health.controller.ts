@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { logger } from "../config/logger"
+import { logger } from "../config/logger.js"
 
 export const HealthController=async (request: Request, response: Response) => {
     logger.info(`Health Route is working.`)

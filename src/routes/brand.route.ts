@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { BrandController } from "../controllers/brand.controller";
-import { validate } from "../middlewares/validation.middleware";
-import { AuthMiddleware, OptionalAuthMiddleware } from "../middlewares/auth.middleware";
+import { BrandController } from "../controllers/brand.controller.js";
+import { validate } from "../middlewares/validation.middleware.js";
+import { AuthMiddleware, OptionalAuthMiddleware } from "../middlewares/auth.middleware.js";
 import {
     createBrandValidator,
     updateBrandValidator,
@@ -9,7 +9,7 @@ import {
     brandIdentifierValidator,
     brandSlugValidator,
     updateBrandTeamValidator,
-} from "../validators/brand.validator";
+} from "../validators/brand.validator.js";
 
 export const brandRouter = Router();
 

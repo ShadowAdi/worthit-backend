@@ -1,12 +1,12 @@
 import express from "express";
 import helmet from "helmet";
-import { CorsConfig } from "./config/cors";
-import { CustomErrorHandler } from "./middlewares/custom-error.middleware";
-import { healthRouter } from "./routes/health.route";
-import { userRouter } from "./routes/user.route";
-import { authRouter } from "./routes/auth.route";
-import { brandRouter } from "./routes/brand.route";
-import { reviewRouter } from "./routes/review.route";
+import { CorsConfig } from "./config/cors.js";
+import { CustomErrorHandler } from "./middlewares/custom-error.middleware.js";
+import { healthRouter } from "./routes/health.route.js";
+import { userRouter } from "./routes/user.route.js";
+import { authRouter } from "./routes/auth.route.js";
+import { brandRouter } from "./routes/brand.route.js";
+import { reviewRouter } from "./routes/review.route.js";
 
 const app = express()
 

@@ -1,9 +1,9 @@
-import { JWT_SECRET_KEY } from "../config/dotenv";
-import { logger } from "../config/logger";
-import { LoginUserDto } from "../types/auth/login-user.dto";
-import { AppError } from "../utils/AppError";
-import { comparePassword } from "../utils/password-utils";
-import { UserService } from "./user.service";
+import { JWT_SECRET_KEY } from "../config/dotenv.js";
+import { logger } from "../config/logger.js";
+import type { LoginUserDto } from "../types/auth/login-user.dto.js";
+import { AppError } from "../utils/AppError.js";
+import { comparePassword } from "../utils/password-utils.js";
+import { UserService } from "./user.service.js";
 import jwt from "jsonwebtoken";
 
 

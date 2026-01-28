@@ -1,7 +1,7 @@
 import cors from "cors";
 import { Express } from "express";
-import { logger } from "./logger";
-import { CLIENT_URL } from "./dotenv";
+import { logger } from "./logger.js";
+import { CLIENT_URL } from "./dotenv.js";
 
 
 export const CorsConfig = (app: Express) => {

@@ -1,10 +1,10 @@
-import { logger } from "../config/logger";
-import { Brand } from "../models/brand.model";
-import { Review } from "../models/review.model";
-import { CreateReviewDto } from "../types/review/review-create.dto";
-import { UpdateReviewDto } from "../types/review/review-update.dto";
-import { AppError } from "../utils/AppError";
-import { BrandService } from "./brand.service";
+import { logger } from "../config/logger.js";
+import { Brand } from "../models/brand.model.js";
+import { Review } from "../models/review.model.js";
+import type { CreateReviewDto } from "../types/review/review-create.dto.js";
+import type { UpdateReviewDto } from "../types/review/review-update.dto.js";
+import { AppError } from "../utils/AppError.js";
+import { BrandService } from "./brand.service.js";
 
 class ReviewServiceClass {
     async createReview(payload: CreateReviewDto, brandId: string, userId: string) {

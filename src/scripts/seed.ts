@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { DB_URL } from "../config/dotenv";
-import { User } from "../models/user.model";
-import { Brand } from "../models/brand.model";
-import { Review } from "../models/review.model";
-import { hashPassword } from "../utils/password-utils";
+import { DB_URL } from "../config/dotenv.js";
+import { User } from "../models/user.model.js";
+import { Brand } from "../models/brand.model.js";
+import { Review } from "../models/review.model.js";
+import { hashPassword } from "../utils/password-utils.js";
 
 // Sample data
 const users = [

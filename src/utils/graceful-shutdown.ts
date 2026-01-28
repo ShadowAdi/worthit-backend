@@ -1,6 +1,6 @@
 import { Server } from "http";
-import { logger } from "../config/logger";
-import { disconnectDB } from "../db/disconnect.db";
+import { logger } from "../config/logger.js";
+import { disconnectDB } from "../db/disconnect.db.js";
 
 export const shutdown = async (server: Server, signal: string) => {
     console.log(`\n Received ${signal}. Shutting down gracefully...`);

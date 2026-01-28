@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { BrandService } from "../services/brand.service";
-import { CreateBrandDto } from "../types/brand/brand-create.dto";
-import { UpdateBrandDto } from "../types/brand/brand-update.dto";
-import { logger } from "../config/logger";
-import { AppError } from "../utils/AppError";
+import { BrandService } from "../services/brand.service.js";
+import type { CreateBrandDto } from "../types/brand/brand-create.dto.js";
+import type { UpdateBrandDto } from "../types/brand/brand-update.dto.js";
+import { logger } from "../config/logger.js";
+import { AppError } from "../utils/AppError.js";
 
 class BrandControllerClass {
     async createBrand(req: Request, res: Response, next: NextFunction) {

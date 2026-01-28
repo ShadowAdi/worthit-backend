@@ -1,10 +1,10 @@
 import { Types } from "mongoose";
-import { logger } from "../config/logger";
-import { Brand } from "../models/brand.model";
-import { CreateBrandDto } from "../types/brand/brand-create.dto";
-import { AppError } from "../utils/AppError";
-import { UpdateBrandDto } from "../types/brand/brand-update.dto";
-import { ReviewService } from "./review.service";
+import { logger } from "../config/logger.js";
+import { Brand } from "../models/brand.model.js";
+import type { CreateBrandDto } from "../types/brand/brand-create.dto.js";
+import { AppError } from "../utils/AppError.js";
+import type { UpdateBrandDto } from "../types/brand/brand-update.dto.js";
+import { ReviewService } from "./review.service.js";
 
 class BrandClassService {
     async createBrand(payload: CreateBrandDto, userId: string | Types.ObjectId) {
