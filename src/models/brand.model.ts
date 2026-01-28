@@ -75,6 +75,10 @@ const schema = new Schema<IBrand>(
             required: true,
             trim: true,
         },
+        icon: {
+            type: String,
+            trim: true,
+        },
         slug: {
             type: String,
             required: true,

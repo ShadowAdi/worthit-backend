@@ -38,6 +38,11 @@ export const createBrandValidator = [
         .matches(/^[a-z0-9-]+$/)
         .withMessage("Slug can only contain lowercase letters, numbers, and hyphens"),
 
+    body("icon")
+        .optional()
+        .isURL()
+        .withMessage("Icon must be a valid URL"),
+
     body("whyItExists")
         .notEmpty()
         .withMessage("Why it exists is required")
@@ -193,6 +198,11 @@ export const updateBrandValidator = [
         .withMessage("Slug must be between 2 and 100 characters")
         .matches(/^[a-z0-9-]+$/)
         .withMessage("Slug can only contain lowercase letters, numbers, and hyphens"),
+
+    body("icon")
+        .optional()
+        .isURL()
+        .withMessage("Icon must be a valid URL"),
 
     body("whyItExists")
         .optional()

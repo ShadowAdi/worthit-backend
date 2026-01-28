@@ -2,6 +2,7 @@ export interface UpdateBrandDto {
     name?: string;
     description?: string;
     slug?: string;
+    icon?: string;
 
     whyItExists?: string;
 

@@ -3,6 +3,7 @@ export interface CreateBrandDto {
     name: string;
     description: string;
     slug: string;
+    icon?: string;
 
     whyItExists: string;
 

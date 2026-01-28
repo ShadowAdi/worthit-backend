@@ -5,6 +5,7 @@ export interface IBrand extends Document {
     description: string;
     slug: string;
     one_liner:string
+    icon?: string;
 
     whyItExists: string; 
 
