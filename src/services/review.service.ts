@@ -21,7 +21,7 @@ class ReviewServiceClass {
                 throw new AppError(`You Cant Review your own brand`, 400)
             }
 
-             if (brandFound.status === "draft") {
+            if (brandFound.status === "draft") {
                 logger.error(`You Can't Review draft brand`)
                 throw new AppError(`You Cant Review draft brand`, 400)
             }
@@ -132,8 +132,13 @@ class ReviewServiceClass {
             if (!updatedReview) {
                 logger.error(`Failed to update review: ${updatedReview}`)
                 throw new AppError(`Failed to update review: ${updatedReview}`, 500)
-
             }
+            await Brand.findByIdAndUpdate(foundReview.id, {
+                $inc: {
+                    recommendCount: payload.recommendation === "recommend" ? 1 : 0,
+                    notRecommendCount: payload.recommendation === "not_recommend" ? 1 : 0,
+                }
+            })
             return updatedReview._id
         } catch (error) {
             console.error(`Error to update Review: ${error}`)
@@ -232,6 +237,14 @@ class ReviewServiceClass {
                 throw new AppError(`Failed to delete review with id: ${reviewId} due to user mismatch`, 404)
             }
             await Review.findByIdAndDelete(reviewId)
+
+            await Brand.findByIdAndUpdate(foundReview.brandId, {
+                $inc: {
+                    recommendCount: foundReview.recommendation === "recommend" ? -1 : 0,
+                    notRecommendCount: foundReview.recommendation === "not_recommend" ? -1 : 0,
+                    reviewCount: -1
+                }
+            })
 
             return "Review Deleted Successfully"
         } catch (error) {
