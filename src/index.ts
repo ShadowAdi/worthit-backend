@@ -1,13 +1,13 @@
 import http, { Server } from "http";
-import { PORT } from "./config/dotenv";
-import { logger } from "./config/logger";
-import "./config/dotenv"
-import { shutdown } from "./utils/graceful-shutdown";
+import { PORT } from "./config/dotenv.js";
+import { logger } from "./config/logger.js";
+import "./config/dotenv.js";
+import { shutdown } from "./utils/graceful-shutdown.js";
 
 
-import "./models/index"
-import { initializeConnection } from "./db/initialize.connection";
-import app from "./server";
+import "./models/index.js"
+import { initializeConnection } from "./db/initialize.connection.js";
+import app from "./server.js";
 
 const server = http.createServer(app)
 
