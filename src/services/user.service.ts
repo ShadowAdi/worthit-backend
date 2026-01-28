@@ -1,13 +1,18 @@
+import { JWT_SECRET_KEY } from "../config/dotenv.js";
 import { logger } from "../config/logger.js";
 import { User } from "../models/user.model.js";
 import type { CreateUserDto } from "../types/user/create-user.dto.js";
 import type { UpdateUserDto } from "../types/user/update-user.dto.js";
 import { AppError } from "../utils/AppError.js";
 import { hashPassword } from "../utils/password-utils.js";
-
+import jwt from "jsonwebtoken";
 class UserClassService {
     async createUser(payload: CreateUserDto) {
         try {
+            if (!JWT_SECRET_KEY) {
+                logger.error(`Failed to get The JWT Key. Please Provide it First`);
+                throw new AppError(`INTERNAL SERVER ERROR`, 500);
+            }
             const exists = await User.findOne({
                 email: payload.email
             })
@@ -21,11 +26,24 @@ class UserClassService {
                 ...payload,
                 password: hashedPassword
             })
-            return {
-                username: user.username,
+
+            const user_created = {
                 email: user.email,
-                _id: user._id,
-                createdAt: user.createdAt
+                id: user._id,
+            };
+
+
+            const token = jwt.sign(user_created, JWT_SECRET_KEY, {
+                expiresIn: "7d",
+            });
+            return {
+                user: {
+                    username: user.username,
+                    email: user.email,
+                    _id: user._id,
+                    createdAt: user.createdAt
+                },
+                token
             }
         } catch (error) {
             logger.error(`Failed to create user: ${error}`)
@@ -37,7 +55,7 @@ class UserClassService {
     async getAllUser(username?: string) {
         try {
             let query: any = {};
-            
+
             if (username) {
                 // Case-insensitive partial match search
                 query.username = { $regex: username, $options: 'i' };
@@ -58,7 +76,7 @@ class UserClassService {
         }
     }
 
-     async getUsersByUsername(username:string) {
+    async getUsersByUsername(username: string) {
         try {
             const users = await User.find({
                 username: { $regex: username, $options: 'i' }
@@ -122,7 +140,7 @@ class UserClassService {
         try {
             // Get the current user
             const currentUser = await User.findById(userId);
-            
+
             if (!currentUser) {
                 throw new AppError("User not found", 404);
             }

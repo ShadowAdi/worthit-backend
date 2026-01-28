@@ -12,7 +12,7 @@ class UserControllerClass {
             console.log(`Creating new user with username: ${req.body.username}`);
 
             const payload: CreateUserDto = req.body;
-            const user = await UserService.createUser(payload);
+            const {token,user} = await UserService.createUser(payload);
 
             logger.info(`User created successfully: ${user._id}`);
             console.log(`User created successfully: ${user._id}`);
@@ -20,7 +20,8 @@ class UserControllerClass {
             res.status(201).json({
                 success: true,
                 message: "User created successfully",
-                user: user
+                user,
+                token
             });
         } catch (error: any) {
             logger.error(`Failed to create user controller: ${error.message}`);
