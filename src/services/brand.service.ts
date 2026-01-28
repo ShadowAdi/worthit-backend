@@ -51,9 +51,23 @@ class BrandClassService {
 
     async getAllBrands() {
         try {
-            const brands = await Brand.find({status:"published"})
+            const brands = await Brand.find({ status: "published" })
+                .select({
+                    name: true,
+                    one_liner: true,
+                    slug: true,
+                    category: true,
+                    country: true,
+                    isIndianBrand: true,
+                    status: true,
+                    publishedAt: true,
+                    launchAt: true,
+                    recommendCount: true,
+                    notRecommendCount: true,
+                    reviewCount: true,
+                    founderId: true
+                })
                 .populate("founderId", "username email profile_url")
-                .populate("team.userId", "username email profile_url")
                 .lean();
 
             return {
@@ -123,7 +137,7 @@ class BrandClassService {
 
             // Check if the brand is published OR if the requesting user is the creator
             const isCreator = userId && brand.founderId && (
-                userId === brand.founderId._id?.toString() || 
+                userId === brand.founderId._id?.toString() ||
                 userId === brand.founderId.toString()
             );
 
