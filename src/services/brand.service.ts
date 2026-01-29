@@ -314,7 +314,12 @@ class BrandClassService {
                 {
                     new: true,
                 }
-            ).lean();
+            ).select({
+                _id: true,
+                slug: true,
+                name: true,
+                viewCount: true
+            }).lean();
 
             if (!updatedBrand) {
                 logger.error(`Brand not found: ${brandId}`)
