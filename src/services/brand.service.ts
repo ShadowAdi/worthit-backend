@@ -65,7 +65,8 @@ class BrandClassService {
                     recommendCount: true,
                     notRecommendCount: true,
                     reviewCount: true,
-                    founderId: true
+                    founderId: true,
+                    images: true
                 })
                 .populate("founderId", "username email profile_url")
                 .lean();
