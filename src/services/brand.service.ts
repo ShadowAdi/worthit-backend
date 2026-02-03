@@ -57,18 +57,12 @@ class BrandClassService {
                     one_liner: true,
                     slug: true,
                     category: true,
-                    country: true,
-                    isIndianBrand: true,
-                    status: true,
-                    publishedAt: true,
-                    launchAt: true,
                     recommendCount: true,
                     notRecommendCount: true,
                     reviewCount: true,
                     founderId: true,
                     images: true
                 })
-                .populate("founderId", "username email profile_url")
                 .lean();
 
             return {
